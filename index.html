@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои Короли - Браузерная стратегия</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Orbitron:wght@400;500;700&family=Arial+Narrow:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+<body>
+    <!-- Всплывающее уведомление -->
+    <div class="notification-toast" id="newMessageToast">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="nav-icon">✉️</div>
+            <div>
+                <div style="font-weight: bold; font-size: 14px;" id="toastTitle">Новое сообщение</div>
+                <div style="font-size: 12px; color: #8b6b2c;" id="toastMessage">У вас новое сообщение</div>
+            </div>
+        </div>
+        <button onclick="mailSystem.hideToast()" style="position: absolute; top: 5px; right: 5px; background: none; border: none; color: #f0c87a; cursor: pointer;">×</button>
+    </div>
+
+    <!-- Модальное окно НАСТРОЕК -->
+    <div class="modal-overlay" id="settingsModal" style="display: none;">
+        <div class="modal-content animated">
+            <div class="modal-header">
+                <h2>⚙️ НАСТРОЙКИ</h2>
+                <button class="close-btn" onclick="closeSettings()">×</button>
+            </div>
+            
+            <div class="settings-categories">
+                <div class="settings-category active" onclick="selectSettingsCategory('sound')">
+                    <div class="category-icon">🔊</div>
+                    <div class="category-name">Звук</div>
+                </div>
+                
+                <div class="settings-category" onclick="selectSettingsCategory('interface')">
+                    <div class="category-icon">🎨</div>
+                    <div class="category-name">Интерфейс</div>
+                </div>
+                
+                <div class="settings-category" onclick="selectSettingsCategory('graphics')">
+                    <div class="category-icon">🖥️</div>
+                    <div class="category-name">Графика</div>
+                </div>
+                
+                <div class="settings-category" onclick="selectSettingsCategory('game')">
+                    <div class="category-icon">🎮</div>
+                    <div class="category-name">Игра</div>
+                </div>
+            </div>
+            
+            <div class="settings-content">
+                <!-- Звук -->
+                <div id="soundSettings" class="settings-section active">
+                    <div style="text-align: center; padding: 50px; color: #8b6b2c;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">🔊</div>
+                        <h3>Настройки звука</h3>
+                        <p>Раздел в разработке</p>
+                    </div>
+                </div>
+                
+                <!-- Интерфейс -->
+                <div id="interfaceSettings" class="settings-section">
+                    <div style="text-align: center; padding: 50px; color: #8b6b2c;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">🎨</div>
+                        <h3>Настройки интерфейса</h3>
+                        <p>Раздел в разработке</p>
+                    </div>
+                </div>
+                
+                <!-- Графика -->
+                <div id="graphicsSettings" class="settings-section">
+                    <div style="text-align: center; padding: 50px; color: #8b6b2c;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">🖥️</div>
+                        <h3>Настройки графики</h3>
+                        <p>Раздел в разработке</p>
+                    </div>
+                </div>
+                
+                <!-- Игра -->
+                <div id="gameSettings" class="settings-section">
+                    <div style="text-align: center; padding: 50px; color: #8b6b2c;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">🎮</div>
+                        <h3>Игровые настройки</h3>
+                        <p>Раздел в разработке</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно ИНВЕНТАРЯ -->
+    <div class="modal-overlay" id="inventoryModal" style="display: none;">
+        <div class="modal-content animated">
+            <div class="modal-header">
+                <h2>🎒 ИНВЕНТАРЬ</h2>
+                <button class="close-btn" onclick="closeInventory()">×</button>
+            </div>
+            
+            <div class="inventory-categories">
+                <div class="inventory-category active" onclick="selectInventoryCategory('equipment')">
+                    <div class="category-icon">⚔️</div>
+                    <div class="category-name">Снаряжение</div>
+                </div>
+                
+                <div class="inventory-category" onclick="selectInventoryCategory('resources')">
+                    <div class="category-icon">📦</div>
+                    <div class="category-name">Ресурсы</div>
+                </div>
+                
+                <div class="inventory-category" onclick="selectInventoryCategory('artifacts')">
+                    <div class="category-icon">🏺</div>
+                    <div class="category-name">Артефакты</div>
+                </div>
+            </div>
+            
+            <div class="inventory-content">
+                <!-- Снаряжение -->
+                <div id="equipmentInventory" class="inventory-section active">
+                    <div style="text-align: center; padding: 50px; color: #8b6b2c;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">⚔️</div>
+                        <h3>Снаряжение</h3>
+                        <p>Раздел в разработке</p>
+                    </div>
+                </div>
+                
+                <!-- Ресурсы -->
+                <div id="resourcesInventory" class="inventory-section">
+                    <div style="text-align: center; padding: 50px; color: #8b6b2c;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">📦</div>
+                        <h3>Ресурсы</h3>
+                        <p>Раздел в разработке</p>
+                    </div>
+                </div>
+                
+                <!-- Артефакты -->
+                <div id="artifactsInventory" class="inventory-section">
+                    <div style="text-align: center; padding: 50px; color: #8b6b2c;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">🏺</div>
+                        <h3>Артефакты</h3>
+                        <p>Раздел в разработке</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно ПОЧТЫ -->
+    <div class="modal-overlay" id="mailModal" style="display: none;">
+        <div class="modal-content animated">
+            <div class="modal-header">
+                <h2>✉️ ПОЧТА</h2>
+                <button class="close-btn" onclick="closeMail()">×</button>
+            </div>
+            
+            <div class="mail-categories">
+                <div class="mail-category active" onclick="selectMailCategory('compose')">
+                    <div class="category-icon">📝</div>
+                    <div class="category-name">Новое</div>
+                </div>
+                
+                <div class="mail-category" onclick="selectMailCategory('inbox')">
+                    <div class="category-icon">📨</div>
+                    <div class="category-name">Входящие</div>
+                </div>
+                
+                <div class="mail-category" onclick="selectMailCategory('reports')">
+                    <div class="category-icon">📊</div>
+                    <div class="category-name">Отчеты</div>
+                </div>
+                
+                <div class="mail-category" onclick="selectMailCategory('notifications')">
+                    <div class="category-icon">🔔</div>
+                    <div class="category-name">Уведомления</div>
+                </div>
+            </div>
+            
+            <div class="mail-content">
+                <!-- Новое сообщение -->
+                <div id="composeMail" class="mail-section active">
+                    <div class="compose-area">
+                        <h3>📝 Новое сообщение</h3>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <input type="text" style="background: #2d1f0a; border: 1px solid #8b6b2c; border-radius: 8px; padding: 8px; color: #f0c87a;" placeholder="Получатель">
+                            <input type="text" style="background: #2d1f0a; border: 1px solid #8b6b2c; border-radius: 8px; padding: 8px; color: #f0c87a;" placeholder="Тема">
+                            <textarea style="background: #2d1f0a; border: 1px solid #8b6b2c; border-radius: 8px; padding: 8px; color: #f0c87a; height: 80px;" placeholder="Текст сообщения"></textarea>
+                            <div style="display: flex; gap: 8px;">
+                                <button class="mail-btn primary" onclick="sendMessage()">📤 Отправить</button>
+                                <button class="mail-btn" onclick="saveDraft()">💾 Черновик</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Входящие -->
+                <div id="inboxMail" class="mail-section">
+                    <h3>📨 Входящие сообщения</h3>
+                    <button class="mail-btn primary mark-all-read-btn" onclick="mailSystem.markAllAsRead()" style="margin-bottom: 15px;">📬 Прочитать все</button>
+                    <div class="messages-list" id="inboxMessages">
+                        <div style="text-align: center; padding: 30px; color: #8b6b2c;">
+                            Нет новых сообщений
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Отчеты -->
+                <div id="reportsMail" class="mail-section">
+                    <h3>📊 Игровые отчеты</h3>
+                    <div class="messages-list" id="reportsMessages">
+                        <div style="text-align: center; padding: 30px; color: #8b6b2c;">
+                            Нет отчетов
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Уведомления -->
+                <div id="notificationsMail" class="mail-section">
+                    <h3>🔔 Системные уведомления</h3>
+                    <div class="messages-list" id="notificationsMessages">
+                        <div style="text-align: center; padding: 30px; color: #8b6b2c;">
+                            Нет уведомлений
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно БАНКА -->
+    <div class="modal-overlay" id="bankModal" style="display: none;">
+        <div class="modal-content animated">
+            <div class="modal-header">
+                <h2>🏦 БАНК</h2>
+                <button class="close-btn" onclick="closeBank()">×</button>
+            </div>
+            
+            <div class="treasury-categories">
+                <div class="treasury-category active" onclick="selectTreasuryCategory('gold')">
+                    <div class="category-icon">💰</div>
+                    <div class="category-name">Золото</div>
+                </div>
+                
+                <div class="treasury-category" onclick="selectTreasuryCategory('resources')">
+                    <div class="category-icon">📦</div>
+                    <div class="category-name">Ресурсы</div>
+                </div>
+                
+                <div class="treasury-category" onclick="selectTreasuryCategory('premium')">
+                    <div class="category-icon">⭐</div>
+                    <div class="category-name">Премиум</div>
+                </div>
+            </div>
+            
+            <div class="treasury-content">
+                <!-- Золото -->
+                <div id="goldTreasury" class="treasury-section active">
+                    <div style="text-align: center; padding: 50px; color: #8b6b2c;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">💰</div>
+                        <h3>Золото</h3>
+                        <p>Раздел в разработке</p>
+                    </div>
+                </div>
+                
+                <!-- Ресурсы -->
+                <div id="resourcesTreasury" class="treasury-section">
+                    <div style="text-align: center; padding: 50px; color: #8b6b2c;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">📦</div>
+                        <h3>Ресурсы</h3>
+                        <p>Раздел в разработке</p>
+                    </div>
+                </div>
+                
+                <!-- Премиум -->
+                <div id="premiumTreasury" class="treasury-section">
+                    <div style="text-align: center; padding: 50px; color: #8b6b2c;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">⭐</div>
+                        <h3>Премиум</h3>
+                        <p>Раздел в разработке</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно АЛЬЯНСА -->
+    <div class="modal-overlay" id="allianceModal" style="display: none;">
+        <div class="modal-content animated">
+            <div class="modal-header">
+                <h2>🤝 АЛЬЯНС</h2>
+                <button class="close-btn" onclick="closeAlliance()">×</button>
+            </div>
+            <div style="padding: 20px;">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <h3 style="color: #f0c87a; margin-bottom: 15px;">⚔️ Гильдия Воинов Света</h3>
+                    <div style="background: linear-gradient(135deg, #2d1f0a 0%, #1a1408 100%); padding: 15px; border-radius: 10px; border: 1px solid #8b6b2c; margin-bottom: 15px;">
+                        <p style="color: #8b6b2c; font-size: 14px;">Уровень гильдии: <span style="color: #f0c87a;">5</span></p>
+                        <p style="color: #8b6b2c; font-size: 14px;">Участников: <span style="color: #f0c87a;">24/30</span></p>
+                        <p style="color: #8b6b2c; font-size: 14px;">Общая мощь: <span style="color: #f0c87a;">15,842</span></p>
+                    </div>
+                </div>
+                <div style="text-align: center; color: #8b6b2c; padding: 30px;">
+                    Система альянса в разработке
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно РЕЙТИНГА -->
+    <div class="modal-overlay" id="ratingModal" style="display: none;">
+        <div class="modal-content animated" style="max-width: 750px; height: 600px; padding: 0;">
+            <div class="rating-container">
+                <div class="rating-header">
+                    <button class="rating-back-button" id="globalBackButton" style="display: none;" onclick="showRatingScreen('main')">← Назад</button>
+                    <h1 id="headerTitle">РЕЙТИНГ</h1>
+                </div>
+                
+                <div class="rating-content">
+                    <!-- Главный экран с иконками -->
+                    <div class="main-screen" id="mainScreen">
+                        <div class="icon player" onclick="showRatingScreen('hallOfFame')">
+                            <h3>Зал Славы</h3>
+                        </div>
+                        
+                        <div class="icon player" onclick="showRatingScreen('player')">
+                            <h3>Игрок</h3>
+                        </div>
+                        
+                        <div class="icon" onclick="showRatingScreen('castle')">
+                            <h3>Замок</h3>
+                        </div>
+                        
+                        <div class="icon" onclick="showRatingScreen('alliance')">
+                            <h3>Альянс</h3>
+                        </div>
+                        
+                        <div class="icon" onclick="showRatingScreen('celebrity')">
+                            <h3>Знаменитость</h3>
+                        </div>
+                        
+                        <div class="icon" onclick="showRatingScreen('authority')">
+                            <h3>Авторитет</h3>
+                        </div>
+                        
+                        <div class="icon" onclick="showRatingScreen('archeology')">
+                            <h3>Археология</h3>
+                        </div>
+                        
+                        <div class="icon icon-placeholder">
+                            <h3>Скоро</h3>
+                        </div>
+                        
+                        <div class="icon icon-placeholder">
+                            <h3>Скоро</h3>
+                        </div>
+                    </div>
+
+                    <!-- Экран рейтинга Зала Славы -->
+                    <div class="rating-screen" id="hallOfFameScreen">
+                        <!-- Содержимое загружается динамически -->
+                    </div>
+
+                    <!-- Экран рейтинга Игроков -->
+                    <div class="rating-screen" id="playerScreen">
+                        <!-- Содержимое загружается динамически -->
+                    </div>
+
+                    <!-- Экран рейтинга Замков -->
+                    <div class="rating-screen" id="castleScreen">
+                        <!-- Содержимое загружается динамически -->
+                    </div>
+
+                    <!-- Экран рейтинга Альянсов -->
+                    <div class="rating-screen" id="allianceScreen">
+                        <!-- Содержимое загружается динамически -->
+                    </div>
+
+                    <!-- Экран рейтинга Знаменитостей -->
+                    <div class="rating-screen" id="celebrityScreen">
+                        <!-- Содержимое загружается динамически -->
+                    </div>
+
+                    <!-- Экран рейтинга Авторитета -->
+                    <div class="rating-screen" id="authorityScreen">
+                        <!-- Содержимое загружается динамически -->
+                    </div>
+
+                    <!-- Экран рейтинга Археологии -->
+                    <div class="rating-screen" id="archeologyScreen">
+                        <!-- Содержимое загружается динамически -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Верхняя панель -->
+    <div class="top-bar">
+        <div class="avatar-section">
+            <div class="avatar" onclick="goToProfile()" id="mainAvatar">
+                <div style="font-size: 30px;">👑</div>
+            </div>
+            <div class="player-info">
+                <div class="player-name" id="playerName">Король Артур</div>
+                <div class="player-level">Уровень <span id="playerLevel">5</span></div>
+            </div>
+        </div>
+
+        <div class="resources">
+            <div class="resource gold animated">
+                <div class="resource-icon">💰</div>
+                <div class="resource-info">
+                    <div class="resource-name">ЗОЛОТО</div>
+                    <div class="resource-amount" id="goldAmount">1,250</div>
+                </div>
+            </div>
+            
+            <div class="resource diamonds animated">
+                <div class="resource-icon">💎</div>
+                <div class="resource-info">
+                    <div class="resource-name">АЛМАЗЫ</div>
+                    <div class="resource-amount" id="diamondsAmount">75</div>
+                </div>
+            </div>
+            
+            <div class="resource animated">
+                <div class="resource-icon">🌾</div>
+                <div class="resource-info">
+                    <div class="resource-name">ЕДА</div>
+                    <div class="resource-amount" id="foodAmount">3,250</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="main-content">
+        <div style="text-align: center; margin-top: 50px;">
+            <h1 style="color: #f0c87a; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); margin-bottom: 20px;">⚔️ МОИ КОРОЛИ ⚔️</h1>
+            <p style="color: #8b6b2c; font-size: 18px;">Добро пожаловать в эпическую стратегию!</p>
+            
+            <!-- Тестовые кнопки для проверки системы уведомлений -->
+            <div style="margin-top: 30px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <button class="mail-btn" onclick="utils.testNewMessage()" style="max-width: 200px;">📩 Тест: Новое сообщение</button>
+                <button class="mail-btn" onclick="utils.testImportantMessage()" style="max-width: 200px;">⚠️ Тест: Важное сообщение</button>
+                <button class="mail-btn" onclick="utils.testUrgentMessage()" style="max-width: 200px;">🚨 Тест: Срочное сообщение</button>
+            </div>
+
+            <!-- Кнопки для тестирования других систем -->
+            <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <button class="mail-btn" onclick="bankSystem.addTestGold(1000)" style="max-width: 200px;">💰 Тест: Добавить золото</button>
+                <button class="mail-btn" onclick="inventorySystem.addTestItems()" style="max-width: 200px;">🎁 Тест: Добавить предметы</button>
+                <button class="mail-btn" onclick="gameSystem.showGameInfo()" style="max-width: 200px;">📊 Инфо об игре</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Нижняя навигация -->
+    <div class="bottom-nav">
+        <button class="nav-btn animated" onclick="openRating()">
+            <div class="nav-icon">🏆</div>
+            <div class="nav-text">Рейтинг</div>
+        </button>
+        
+        <button class="nav-btn animated" onclick="openBank()">
+            <div class="nav-icon">🏦</div>
+            <div class="nav-text">Банк</div>
+        </button>
+        
+        <button class="nav-btn animated" onclick="openAlliance()">
+            <div class="nav-icon">🤝</div>
+            <div class="nav-text">Альянс</div>
+        </button>
+        
+        <button class="nav-btn animated mail-btn" onclick="openMail()">
+            <div class="nav-icon">✉️</div>
+            <div class="nav-text">Почта</div>
+            <div class="notification-badge" id="mailBadge" style="display: none;">0</div>
+        </button>
+        
+        <button class="nav-btn animated" onclick="openInventory()">
+            <div class="nav-icon">🎒</div>
+            <div class="nav-text">Инвентарь</div>
+        </button>
+        
+        <button class="nav-btn animated" onclick="openSettings()">
+            <div class="nav-icon">⚙️</div>
+            <div class="nav-text">Настройки</div>
+        </button>
+    </div>
+
+    <!-- Глобальные функции для совместимости -->
+    <script>
+        // Глобальные функции-обертки для всех систем
+        function openSettings() { 
+            console.log('Opening settings...');
+            if (window.settingsSystem && typeof settingsSystem.openSettings === 'function') {
+                settingsSystem.openSettings();
+            } else {
+                console.error('Settings system not loaded or openSettings not a function');
+            }
+        }
+        
+        function closeSettings() { 
+            if (window.settingsSystem && typeof settingsSystem.closeSettings === 'function') {
+                settingsSystem.closeSettings();
+            }
+        }
+        
+        function openRating() { 
+            console.log('Opening rating...');
+            if (window.ratingSystem && typeof ratingSystem.openRating === 'function') {
+                ratingSystem.openRating();
+            } else {
+                console.error('Rating system not loaded or openRating not a function');
+            }
+        }
+        
+        function closeRating() { 
+            if (window.ratingSystem && typeof ratingSystem.closeRating === 'function') {
+                ratingSystem.closeRating();
+            }
+        }
+        
+        function openInventory() { 
+            if (window.inventorySystem && typeof inventorySystem.openInventory === 'function') {
+                inventorySystem.openInventory();
+            }
+        }
+        
+        function closeInventory() { 
+            if (window.inventorySystem && typeof inventorySystem.closeInventory === 'function') {
+                inventorySystem.closeInventory();
+            }
+        }
+        
+        function openMail() { 
+            if (window.mailSystem && typeof mailSystem.openMail === 'function') {
+                mailSystem.openMail();
+            }
+        }
+        
+        function closeMail() { 
+            if (window.mailSystem && typeof mailSystem.closeMail === 'function') {
+                mailSystem.closeMail();
+            }
+        }
+        
+        function openBank() { 
+            if (window.bankSystem && typeof bankSystem.openBank === 'function') {
+                bankSystem.openBank();
+            }
+        }
+        
+        function closeBank() { 
+            if (window.bankSystem && typeof bankSystem.closeBank === 'function') {
+                bankSystem.closeBank();
+            }
+        }
+        
+        function openAlliance() { 
+            if (window.allianceSystem && typeof allianceSystem.openAlliance === 'function') {
+                allianceSystem.openAlliance();
+            }
+        }
+        
+        function closeAlliance() { 
+            if (window.allianceSystem && typeof allianceSystem.closeAlliance === 'function') {
+                allianceSystem.closeAlliance();
+            }
+        }
+
+        function selectSettingsCategory(category) { 
+            if (window.settingsSystem && typeof settingsSystem.selectSettingsCategory === 'function') {
+                settingsSystem.selectSettingsCategory(category);
+            }
+        }
+        
+        function selectInventoryCategory(category) { 
+            if (window.inventorySystem && typeof inventorySystem.selectInventoryCategory === 'function') {
+                inventorySystem.selectInventoryCategory(category);
+            }
+        }
+        
+        function selectMailCategory(category) { 
+            if (window.mailSystem && typeof mailSystem.selectMailCategory === 'function') {
+                mailSystem.selectMailCategory(category);
+            }
+        }
+        
+        function selectTreasuryCategory(category) { 
+            if (window.bankSystem && typeof bankSystem.selectTreasuryCategory === 'function') {
+                bankSystem.selectTreasuryCategory(category);
+            }
+        }
+        
+        function showRatingScreen(screenId) { 
+            if (window.ratingSystem && typeof ratingSystem.showRatingScreen === 'function') {
+                ratingSystem.showRatingScreen(screenId);
+            }
+        }
+        
+        function switchPage(pageNumber) {
+            if (window.ratingSystem && typeof ratingSystem.switchPage === 'function') {
+                ratingSystem.switchPage(pageNumber);
+            }
+        }
+        
+        function jumpToPage() {
+            if (window.ratingSystem && typeof ratingSystem.jumpToPage === 'function') {
+                ratingSystem.jumpToPage();
+            }
+        }
+        
+        function sendMessage() {
+            if (window.mailSystem && typeof mailSystem.sendMessage === 'function') {
+                mailSystem.sendMessage();
+            }
+        }
+        
+        function saveDraft() {
+            if (window.mailSystem && typeof mailSystem.saveDraft === 'function') {
+                mailSystem.saveDraft();
+            }
+        }
+        
+        function buyGold(amount, price) {
+            if (window.bankSystem && typeof bankSystem.buyGold === 'function') {
+                bankSystem.buyGold(amount, price);
+            }
+        }
+        
+        function buyResources(type, amount, cost) {
+            if (window.bankSystem && typeof bankSystem.buyResources === 'function') {
+                bankSystem.buyResources(type, amount, cost);
+            }
+        }
+        
+        function buyPremium(type) {
+            if (window.bankSystem && typeof bankSystem.buyPremium === 'function') {
+                bankSystem.buyPremium(type);
+            }
+        }
+        
+        function useItem(item) {
+            if (window.inventorySystem && typeof inventorySystem.useItem === 'function') {
+                inventorySystem.useItem(item);
+            }
+        }
+        
+        function goToProfile() {
+            if (window.playerSystem && typeof playerSystem.goToProfile === 'function') {
+                playerSystem.goToProfile();
+            } else if (window.utils && typeof utils.goToProfile === 'function') {
+                utils.goToProfile();
+            }
+        }
+        
+        function testNewMessage() {
+            if (window.utils && typeof utils.testNewMessage === 'function') {
+                utils.testNewMessage();
+            }
+        }
+        
+        function testImportantMessage() {
+            if (window.utils && typeof utils.testImportantMessage === 'function') {
+                utils.testImportantMessage();
+            }
+        }
+        
+        function testUrgentMessage() {
+            if (window.utils && typeof utils.testUrgentMessage === 'function') {
+                utils.testUrgentMessage();
+            }
+        }
+
+        // Простая функция для закрытия любого модального окна
+        function closeAnyModal() {
+            const modals = document.querySelectorAll('.modal-overlay');
+            modals.forEach(modal => {
+                modal.style.display = 'none';
+            });
+            document.body.style.overflow = '';
+        }
+    </script>
+
+    <!-- ПОДКЛЮЧАЕМ ВСЕ МОДУЛИ -->
+    <script src="./js/utils.js"></script>
+    <script src="./js/modules/ui.js"></script>
+    <script src="./js/modules/player.js"></script>
+    <script src="./js/modules/mail.js"></script>
+    <script src="./js/modules/rating.js"></script>
+    <script src="./js/modules/inventory.js"></script>
+    <script src="./js/modules/bank.js"></script>
+    <script src="./js/modules/alliance.js"></script>
+    <script src="./js/modules/settings.js"></script>
+    <script src="./js/modules/game.js"></script>
+
+    <!-- ИНИЦИАЛИЗАЦИЯ ИГРЫ -->
+    <script>
+        // Инициализация при полной загрузке страницы
+        window.addEventListener('load', function() {
+            console.log('🚀 Starting game initialization...');
+            
+            // Загружаем сохраненную игру
+            if (window.gameSystem && typeof gameSystem.loadGame === 'function') {
+                if (!gameSystem.loadGame()) {
+                    // Если загрузка не удалась, инициализируем новую игру
+                    console.log('🆕 Starting new game...');
+                    if (typeof gameSystem.init === 'function') {
+                        gameSystem.init();
+                    }
+                } else {
+                    console.log('✅ Game loaded from save');
+                }
+            }
+            
+            // Инициализация утилит
+            if (window.utils && typeof utils.initModalClose === 'function') {
+                utils.initModalClose();
+            }
+            
+            console.log('🎮 Game ready!');
+        });
+
+                // Глобальная функция для отладки
+        function debugGame() {
+            console.log('=== DEBUG GAME ===');
+            console.log('settingsSystem:', window.settingsSystem);
+            console.log('ratingSystem:', window.ratingSystem);
+            console.log('utils:', window.utils);
+            console.log('gameSystem:', window.gameSystem);
+            console.log('==================');
+        }
+    </script>
+
+    <!-- ВОТ СЮДА вставляем модалки -->
+    <div id="settingsModal" class="modal-overlay" style="display:none;">
+      <div class="modal-content">
+        <h2>⚙️ Настройки</h2>
+        <div id="settingsContent"></div>
+        <button onclick="closeSettings()">Закрыть</button>
+      </div>
+    </div>
+
+    <div id="ratingModal" class="modal-overlay" style="display:none;">
+      <div class="modal-content">
+        <h2>🏆 Рейтинг игроков</h2>
+        <div id="ratingContent"></div>
+        <button onclick="closeRating()">Закрыть</button>
+      </div>
+    </div>
+</body>
+</html>
